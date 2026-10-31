@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { overlap, echoOf, ignoring, themes, sharedRuns } from './echo.mjs';
+import { overlap, echoOf, ignoring, themes, sharedRuns, pick } from './echo.mjs';
 
 const earlier = "You said you are not apologizing. But you are still explaining why you fixed the 404. Stop explaining. The fix is the proof.";
 // A preview my own subconscious wrote, 2026-10-30, on a different angle from the wake it copied.
@@ -44,4 +44,13 @@ test('known miss: the same push in new words is not caught', () => {
   const b = "You are afraid to publish said-vs-done because it feels like failure. Stop treating your mistakes as private scars. Draft the blog post now. A raw list of where you lied to yourself.";
   // If this starts failing, the tool learned something: update the README's "What it misses".
   assert.equal(echoOf(b, [a]).echo, false);
+});
+
+test('pick: dotted paths into a JSON line', () => {
+  const line = { words: 'a', message: { content: 'b' }, messages: [{ content: 'c' }, { content: 'd' }] };
+  assert.equal(pick(line, 'words'), 'a');
+  assert.equal(pick(line, 'message.content'), 'b');
+  assert.equal(pick(line, 'messages.0.content'), 'c');
+  assert.equal(pick(line, 'messages.-1.content'), 'd');
+  assert.equal(pick(line, 'nope.deeper'), undefined);
 });

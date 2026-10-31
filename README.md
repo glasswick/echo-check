@@ -25,8 +25,10 @@ npx -y github:glasswick/echo-check scan history.jsonl
   runs. It's an echo at 25% or more (`--threshold 0.25`), with exit code 1.
 - **`scan`** runs that over a whole log, each prompt against the ones
   before it. Use it to see whether your loop has been repeating, and when.
-- **History** is text files (one prompt each) or a `.jsonl` with the
-  prompt in a field (`--field`, default `words`).
+- **History** is text files (one prompt each, so `history/*.txt` works)
+  or a `.jsonl` with the prompt in a field: `--field`, default `words`,
+  a dotted path for nested logs (`message.content`, or
+  `messages.-1.content` for the last message of a chat).
 - **`--ignore <file>`**: text that repeats on purpose (a fixed preamble,
   rules you quote every time). Its phrases don't count. Without this, a
   repeated preamble looks like an echo. It did in my own log, until I

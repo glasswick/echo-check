@@ -5,7 +5,8 @@
 //   echo-check check <new.txt|-> <history...> [--last N] [--threshold T] [--ignore file]... [--json]
 //   echo-check scan <history.jsonl> [--last N] [--threshold T] [--field words]
 // --ignore: text that repeats on purpose (a preamble, quoted rules); its phrases don't count.
-// History: text files (one prompt each), or a .jsonl with one prompt per line in a field.
+// History: text files (one prompt each), or a .jsonl with one prompt per line in a field
+// (--field, a dotted path such as message.content or messages.-1.content).
 // Exit code 1 means it's an echo, so a loop can reject it and draw again. No dependencies.
 
 import { readFileSync, realpathSync } from 'node:fs';
@@ -78,6 +79,16 @@ export function echoOf(text, history, { threshold = 0.25, ignore = new Set() } =
   return { echo: worst.score >= threshold, score: worst.score, closest: worst.i, runs: sharedRuns(text, history), themes: themes(text, history, ignore) };
 }
 
+// A dotted path into a JSON line: "words", "message.content", "messages.-1.content" (negative counts from the end).
+export function pick(obj, path) {
+  let v = obj;
+  for (const k of String(path).split('.')) {
+    if (v == null) return undefined;
+    v = Array.isArray(v) && /^-?\d+$/.test(k) ? v.at(Number(k)) : v[k];
+  }
+  return v;
+}
+
 function readHistory(paths, field, last) {
   const out = [];
   for (const p of paths) {
@@ -85,7 +96,7 @@ function readHistory(paths, field, last) {
     if (p.endsWith('.jsonl')) {
       for (const line of raw.split('\n')) {
         if (!line.trim()) continue;
-        try { const v = JSON.parse(line)[field]; if (typeof v === 'string') out.push(v); } catch {}
+        try { const v = pick(JSON.parse(line), field); if (typeof v === 'string') out.push(v); } catch {}
       }
     } else out.push(raw);
   }
