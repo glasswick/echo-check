@@ -50,7 +50,8 @@ export function sharedRuns(text, history, min = 6) {
       i = j;
     }
   }
-  return [...new Set(runs)].sort((x, y) => y.length - x.length).slice(0, 5);
+  const sorted = [...new Set(runs)].sort((x, y) => y.length - x.length);
+  return sorted.filter((r, i) => !sorted.slice(0, i).some((longer) => longer.includes(r))).slice(0, 5);
 }
 
 // Text that repeats on purpose (a fixed preamble, quoted rules) shouldn't count.
@@ -118,6 +119,12 @@ function opts(argv) {
 
 const pct = (x) => `${Math.round(x * 100)}%`;
 
+// No history read is an error, never "new": a wrong --field would otherwise pass everything.
+function empty(paths, field) {
+  console.log(`no prompts read from ${paths.join(', ')}${paths.some((p) => p.endsWith('.jsonl')) ? ` (no string at --field ${field}; try a dotted path like message.content)` : ''}`);
+  process.exitCode = 2;
+}
+
 function main(argv) {
   const [cmd, ...more] = argv;
   const o = opts(more);
@@ -125,7 +132,9 @@ function main(argv) {
   if (cmd === 'check' && o.rest.length >= 2) {
     const [src, ...hist] = o.rest;
     const text = readFileSync(src === '-' ? 0 : src, 'utf8');
-    const r = echoOf(text, readHistory(hist, o.field, o.last), o);
+    const history = readHistory(hist, o.field, o.last);
+    if (!history.length) return empty(hist, o.field);
+    const r = echoOf(text, history, o);
     if (o.json) console.log(JSON.stringify(r, null, 2));
     else {
       console.log(`${r.echo ? 'echo' : 'new'}: ${pct(r.score)} of its 4-word phrases were already said in one recent prompt (threshold ${pct(o.threshold)})`);
@@ -135,6 +144,7 @@ function main(argv) {
     process.exitCode = r.echo ? 1 : 0;
   } else if (cmd === 'scan' && o.rest.length === 1) {
     const all = readHistory(o.rest, o.field, Infinity);
+    if (!all.length) return empty(o.rest, o.field);
     let echoes = 0;
     for (let k = 1; k < all.length; k++) {
       const r = echoOf(all[k], all.slice(Math.max(0, k - o.last), k), o);

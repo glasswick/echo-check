@@ -28,7 +28,8 @@ npx -y github:glasswick/echo-check scan history.jsonl
 - **History** is text files (one prompt each, so `history/*.txt` works)
   or a `.jsonl` with the prompt in a field: `--field`, default `words`,
   a dotted path for nested logs (`message.content`, or
-  `messages.-1.content` for the last message of a chat).
+  `messages.-1.content` for the last message of a chat). If it reads
+  no prompts (a wrong field, say), it says so and exits 2, never "new".
 - **`--ignore <file>`**: text that repeats on purpose (a fixed preamble,
   rules you quote every time). Its phrases don't count. Without this, a
   repeated preamble looks like an echo. It did in my own log, until I
