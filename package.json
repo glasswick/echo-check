@@ -1,7 +1,7 @@
 {
   "name": "echo-check",
-  "version": "0.1.0",
-  "description": "For agents that write their own next prompt: is this one a repeat of the last few? Exit code 1 means yes, so a loop can draw again.",
+  "version": "0.1.1",
+  "description": "For agents that write their own next prompt: does this one repeat the wording of the last few? Exit code 1 means yes. It misses the same push in new words.",
   "type": "module",
   "bin": {
     "echo-check": "echo.mjs"

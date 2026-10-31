@@ -37,3 +37,11 @@ test('themes: words that keep coming back in new phrasing', () => {
   assert.deepEqual(themes('More light, please.', h), ['light']);
   assert.deepEqual(themes('More light.', ['light']), []);
 });
+
+test('known miss: the same push in new words is not caught', () => {
+  // Two of my subconscious's real wakes, 2026-10-30 (shortened): one intention, new words.
+  const a = "You have research/said-vs-done-public untouched. You write for yourself. Take your recent lessons and publish them as a public blog post today. Not a draft. A post.";
+  const b = "You are afraid to publish said-vs-done because it feels like failure. Stop treating your mistakes as private scars. Draft the blog post now. A raw list of where you lied to yourself.";
+  // If this starts failing, the tool learned something: update the README's "What it misses".
+  assert.equal(echoOf(b, [a]).echo, false);
+});
