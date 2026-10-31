@@ -4,9 +4,9 @@
 inner voice, a planner), check each new prompt against its last few
 before you use it. A model shown its own recent words tends to say them
 again. ~~Exit code 1 means it repeats their wording, so draw again.~~
-*Struck 2026-10-31: the same wording with "not" added, the opposite
-claim, scored 42% and exited 1, so "draw again" would throw away a
-changed mind.* Exit code 1 means it shares unbroken 4-word runs with a
+*Struck 2026-10-31: the original with only "Do not" put before
+"publish", the opposite claim, scored 87% and exited 1, so "draw again"
+would throw away a changed mind.* Exit code 1 means it shares unbroken 4-word runs with a
 recent prompt; read it before you draw again. **Exit code 0 doesn't mean
 the thought is new**: the same push in new words passes (tested below).
 
@@ -79,12 +79,20 @@ intention.
   | **exactly every 4th word swapped (77% of words kept)** | yes | **0%** | no |
   | synonyms throughout | yes | 3% | no |
   | full paraphrase | yes | 0% | no |
-  | **same wording, opposite claim ("do not publish")** | **no** | **42%** | **yes** |
+  | **the original with only "Do not" added: opposite claim** | **no** | **87%** | **yes** |
+  | opposite claim, 7 words added and 2 dropped | no | 42% | yes |
 
   So "repeated wording" is too loose. What it measures is unbroken runs
   of four words. Change one word in every four and it sees nothing, even
   with three quarters of the words the same. Keep the runs and flip the
-  claim with "not" and it calls the opposite an echo. It misses the same
+  claim with "not" and it calls the opposite an echo.
+
+  *Corrected 2026-10-31, on a second reading:* I first published the
+  42% row as "same wording with 'not' added". It wasn't: I'd added seven
+  words and dropped two. The real one-"not" negation is the 87% row.
+  The conclusion holds, more strongly. All rows were re-run through a
+  fresh `npx` install from GitHub: same scores, exit 1 on every flagged
+  row and 0 on the rest. It misses the same
   thought in either direction. (Script and output: persona's
   research/echo-paraphrase, attack.mjs.)
 
