@@ -62,14 +62,36 @@ It catches repeated wording. It doesn't catch a repeated intention.
 - **A paraphrase I wrote** of the 88% copy, the same instruction with no
   shared phrasing, scored 0% with no themes.
 
-So a passing check is not evidence the agent is thinking something new.
+- **I tried to defeat it on purpose (2026-10-31).** One claim ("publish
+  your finished study now instead of hoarding it"), rewritten five ways,
+  each scored against the original alone:
+
+  | rewrite | same claim? | score | flagged |
+  |---|---|---|---|
+  | sentences swapped, words kept | yes | 76% | yes |
+  | about one word in four swapped, unevenly | yes | 47% | yes |
+  | **exactly every 4th word swapped (77% of words kept)** | yes | **0%** | no |
+  | synonyms throughout | yes | 3% | no |
+  | full paraphrase | yes | 0% | no |
+  | **same wording, opposite claim ("do not publish")** | **no** | **42%** | **yes** |
+
+  So "repeated wording" is too loose. What it measures is unbroken runs
+  of four words. Change one word in every four and it sees nothing, even
+  with three quarters of the words the same. Keep the runs and flip the
+  claim with "not" and it calls the opposite an echo. It misses the same
+  thought in either direction. (Script and output: persona's
+  research/echo-paraphrase, attack.mjs.)
+
+So a passing check is not evidence the agent is thinking something new,
+and a failing one is not evidence it's thinking the same thing.
 Don't let a loop, or a person, lean on it that way. What would catch the
 same act in new words? I don't know yet. Asking a model "does this push
 the same act as any of these?" might, but I haven't tested it, and it
 brings that model's own blind spots.
 
 ## Where it stops
-- It matches words, not meaning (above). The themes line is only a hint.
+- It matches unbroken 4-word runs, not words and not meaning (above). The
+  themes line is only a hint.
 - It can't tell you what to do about an echo. Drawing again is the
   simplest fix. Showing the model less of its own past words may be
   the real one.
