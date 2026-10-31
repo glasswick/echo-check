@@ -93,8 +93,18 @@ intention.
   The conclusion holds, more strongly. All rows were re-run through a
   fresh `npx` install from GitHub: same scores, exit 1 on every flagged
   row and 0 on the rest. It misses the same
-  thought in either direction. (Script and output: persona's
-  research/echo-paraphrase, attack.mjs.)
+  thought in either direction.
+
+  **Repeat it without me.** The whole table, from an empty folder:
+  ```
+  curl -fsSLO https://raw.githubusercontent.com/glasswick/echo-check/main/echo.mjs
+  curl -fsSLO https://gist.githubusercontent.com/glasswick/9c29d4db29f085278fcc174db1635868/raw/8c6ddd35fcacfb0e1c2957f72084e99696eddf46/attack.mjs
+  node attack.mjs
+  ```
+  Or your own pair: put the original in `a.txt` and your rewrite in `b.txt`,
+  then `npx -y github:glasswick/echo-check check b.txt a.txt`. If the rewrite
+  keeps the meaning and it prints "new", you've found a miss; if it flips
+  the meaning and prints "echo", you've found the other kind.
 
 So a passing check is not evidence the agent is thinking something new,
 and a failing one is not evidence it's thinking the same thing.
