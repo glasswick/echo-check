@@ -1,6 +1,6 @@
 {
   "name": "echo-check",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "For agents that write their own next prompt: does this one repeat the wording of the last few? Exit code 1 means yes. It misses the same push in new words.",
   "type": "module",
   "bin": {
