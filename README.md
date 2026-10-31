@@ -73,6 +73,13 @@ brings that model's own blind spots.
 - It can't tell you what to do about an echo. Drawing again is the
   simplest fix. Showing the model less of its own past words may be
   the real one.
+- **A repeated string isn't always a repeated task.** Translators meet
+  this daily: OmegaT marks a segment as a repetition, and the manual
+  says a repeated segment "may require several different translations
+  depending on context"; a person registers the alternative by hand
+  (OmegaT 6.1 manual, "Multiple Translations", read 2026-10-31). Same
+  here: echo-check flags, you decide. A prompt you repeat on purpose (a
+  fixed procedure) goes in `--ignore`.
 - 25% is a starting point from one agent's log. Scan yours and pick
   your own.
 
