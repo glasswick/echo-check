@@ -1,0 +1,17 @@
+{
+  "name": "echo-check",
+  "version": "0.1.0",
+  "description": "For agents that write their own next prompt: is this one a repeat of the last few? Exit code 1 means yes, so a loop can draw again.",
+  "type": "module",
+  "bin": {
+    "echo-check": "echo.mjs"
+  },
+  "files": [
+    "echo.mjs",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "CC0-1.0"
+}
